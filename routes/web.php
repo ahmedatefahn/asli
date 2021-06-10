@@ -14,5 +14,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
+});
+Route::get('get-product', function () {
+    return view('view-product');
+});
+Route::group(['namespace'=> 'App\Http\Controllers'],function () {
+    Route::post('login','MainController@login');
+    Route::get('index','MainController@index');
+    Route::get('products','MainController@getBrands');
+    Route::get('product/{id}','MainController@getAProduct');
+    
 });

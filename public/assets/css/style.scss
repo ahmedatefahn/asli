@@ -1,0 +1,309 @@
+/*================================================================================
+	Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
+	Version: 2.0
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+================================================================================
+
+NOTE:
+------
+PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
+WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+.btn-primary {
+    border-color: #be893a !important;
+    background-color: #be893a !important;
+    color: #FFFFFF;
+}
+
+
+.btn-outline-primary {
+    border: 1px solid #000000;
+    background-color: transparent;
+    color: #000000;
+}
+
+
+
+.btn-outline-primary:hover {
+    color: #ffffff;
+    background: #bf8839;
+    border-color: #bf8839;
+}
+
+
+.card {
+    overflow: hidden;
+}
+
+.mobile-only{
+	display: none;
+}
+
+
+.brands {
+
+	.brand-header {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		margin-bottom: 20px;
+		img{
+			margin-right: 10px;
+			border-radius: 500px;
+			width: 60px;
+			border: 2px solid #c28d3d;
+			padding: 2px;
+		}
+		h2{
+			margin-bottom: 0px !important;
+			color: #c28d3d;
+		}
+	}
+
+	hr {
+		margin-top: 2rem;
+		margin-bottom: 2rem;
+	}
+
+}
+
+.main-menu .main-menu-content {
+    height: auto !important;
+}
+
+nav.header-navbar.navbar-expand-lg.navbar.navbar-with-menu.floating-nav.navbar-light.navbar-shadow.mobile-only {
+    margin: 0 !important;
+    width: 100% !important;
+}
+
+.main-menu .navbar-header .navbar-brand .brand-logo {
+    background: unset !important;
+}
+
+.main-menu .navbar-header {
+    height: auto;
+    margin-bottom: 10px;
+}
+
+
+.main-menu.menu-dark .navigation > li ,
+.main-menu.menu-dark .navigation > li a {
+	background: #000000 !important;
+	box-shadow: unset !important;
+	border-radius: 3px;
+}
+
+.main-menu.menu-dark .navigation > li a:hover ,
+.main-menu.menu-dark .navigation > li a:hover i{
+	background-color: #be893a !important;
+	color: #fff;
+}
+
+html body.bg-full-screen-image {
+    background: #333333;
+}
+
+.card.bg-authentication img {
+    width: 100%;
+    max-width: 100% !important;
+	min-width: 320px;
+    padding: 70px;
+    background: #252525;
+}
+
+.content-body {
+    background-image: url(../../app-assets/images/splash.png);
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+}
+
+
+html .pace .pace-progress {
+    background: #be893a;
+}
+
+
+.vs-checkbox-primary input:checked ~ .vs-checkbox .vs-checkbox--check {
+    background-color: #be893a !important;
+}
+
+.vs-checkbox-primary input:checked ~ .vs-checkbox{
+	border-color: #be893a !important;
+}
+
+
+.form-control:focus{
+    border-color: #be893a;
+}
+
+
+.add-product{
+	width: 800px;
+	max-width: 100%;
+	margin: auto;
+	.product-image {
+		border: 2px dashed #d8d8d8;
+		background: #f8f8f8;
+		cursor: pointer;
+		border-radius: 8px;
+		width: 300px;
+		img#blah {
+			padding: 10px;
+			width: 100%;
+			height: auto;
+			border-radius: 20px;
+		}
+	}
+}
+
+.brand{
+	.card-content{
+		padding: 20px;
+	}
+
+	img.card-img-top {
+		margin: auto;
+		display: block;
+		height: auto;
+		border-radius: 8px;
+	}
+
+	.card {
+		width: 100%;
+		margin: auto;
+	}
+
+	.barcodes-list {
+		ul {
+			list-style: none;
+			padding: 0;
+			li {
+				display: flex;
+				justify-content: space-between;
+				margin-bottom: 8px;
+				padding: 10px;
+				border-radius: 30px;
+				overflow: hidden;
+				&:nth-child(odd) {
+					background: rgb(240, 240, 240);
+				}
+
+				&:nth-child(even) {
+					background: rgb(240, 240, 240);
+				}
+				button {
+					border-radius: 30px;
+				}
+			}
+		}
+	}
+}
+
+body.semi-dark-layout .main-menu,
+body.semi-dark-layout .main-menu-content .navigation-main {
+    background-color: #000000;
+}
+
+
+.navbar-header {
+    margin-top: 20px !important;
+}
+
+
+
+
+
+
+
+
+
+/* special order page */
+
+.special-order-section {
+
+	i.fa {
+		font-size: 16px;
+		color: #fff;
+		padding: 8px;
+		border-radius: 50px;
+		cursor: pointer;
+	}
+
+	.all-orders{
+
+		.one-order {
+			background: #F7F7F7;
+			font-size: 22px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 10px 15px;
+			border-radius: 10px;
+			margin-bottom: 10px;
+
+			p{
+				margin: 0px;
+				font-size: 15px;
+			}
+
+			i.fa.fa-trash {
+				background: #a5243d;
+			}
+		}
+
+	}
+
+	.order-input{
+		position: relative;
+		margin-bottom: 20px;
+
+		i.fa.fa-check {
+			background: #3B71B0;
+			position: absolute;
+			top: 0;
+			right: 0;
+			margin: 15px 20px;
+		}
+	}
+
+	.submit-btn {
+	    display: flex;
+	    justify-content: flex-start;
+	    align-items: center;
+	    flex-direction: row;
+
+	    a.btn{
+	    	margin-right: 10px;
+	    }
+	}
+
+	i.fa.fa-heart {
+		background: #1b5fa1;
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+@media all and ( min-width : 992px ) {	
+	.content-wrapper {
+		margin-top: 0 !important;
+	}
+	.navbar-header li.nav-item.mr-auto {
+		margin: auto;
+	}
+}
+
+@media all and ( max-width : 992px ) {	
+	.mobile-only{
+		display: flex;
+	}
+}
