@@ -10,6 +10,7 @@ use Redirect;
 use App\Models\Product;
 use App\Models\Brand;
 use Session;
+use Illuminate\Support\Str;
 class MainController extends Controller
 {
     public function index()
@@ -62,6 +63,50 @@ class MainController extends Controller
             return view('view-product',['product'=>$product]);
         }
     }
-    
+    public function getAddProduct()
+    {
+        $brands = Brand::get();
+        return view('add-product',['brands'=>$brands]);
+    }
+    public function addProduct(Request $request)
+    {
+        $data = $request->except('photo');
+        
+        if ($request->hasFile('photo')) {
+
+            $file = $request->file("photo");
+            $filename = Str::random(6) . '_' . time() . '_' . $file->getClientOriginalName();
+            $path = 'ProjectFiles/ProductPhotos';
+            $file->move($path, $filename);
+            $data['photo'] = $path . '/' . $filename;
+        }
+        // dd($data);
+        $product = Product::create($data);
+        Session::flash('message', "Added Product Successfully");
+        return Redirect::back();
+    }
+
+    public function getAddBrand()
+    {
+        
+        return view('add-brand');
+    }
+    public function addBrand(Request $request)
+    {
+        $data = $request->except('photo');
+        
+        if ($request->hasFile('photo')) {
+
+            $file = $request->file("photo");
+            $filename = Str::random(6) . '_' . time() . '_' . $file->getClientOriginalName();
+            $path = 'ProjectFiles/BrandPhotos';
+            $file->move($path, $filename);
+            $data['photo'] = $path . '/' . $filename;
+        }
+        // dd($data);
+        $brand = Brand::create($data);
+        Session::flash('message', "Added Brand Successfully");
+        return Redirect::back();
+    }
 
 }

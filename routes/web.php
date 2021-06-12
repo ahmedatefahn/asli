@@ -24,5 +24,9 @@ Route::group(['namespace'=> 'App\Http\Controllers'],function () {
     Route::get('index','MainController@index');
     Route::get('products','MainController@getBrands');
     Route::get('product/{id}','MainController@getAProduct');
+    Route::get('add-product','MainController@getAddProduct');
+    Route::post('add-product','MainController@addProduct');
+    Route::get('add-brand','MainController@getAddBrand');
+    Route::post('add-brand','MainController@addBrand');
     
 });

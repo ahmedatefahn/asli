@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-    @section('title','Add Product')
+    @section('title','Add Brand')
     @section('content')
     <!-- BEGIN: Content-->
     <div class="app-content content">
@@ -13,12 +13,12 @@
                 <section class="add-product input-validation"> 
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Add Product </h4>
+                            <h4 class="card-title">Add Brand </h4>
                         </div>
                         
                         <div class="card-content">
                             <div class="card-body">
-                                <form class="form-horizontal" novalidate action="{{url('add-product')}}" method="post" enctype="multipart/form-data">  
+                                <form class="form-horizontal" novalidate action="{{url('add-brand')}}" method="post" enctype="multipart/form-data">  
                                     @csrf
                                     @if (Session::has('message'))
                                             <div class="alert alert-success">{{ Session::get('message') }}</div>
@@ -31,20 +31,12 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label> Product Name  </label>
+                                        <label> Brand Name  </label>
                                         <div class="controls">
-                                            <input type="text" name="name" class="form-control" placeholder="Product Name" required>
+                                            <input type="text" name="name" class="form-control" placeholder="Brand Name" required>
                                         </div>
                                     </div> 
-                                    <div class="form-group">
-                                        <label for="brand">Select Brand:</label>
-                                        <select name="brand_id" class="form-control" required>
-                                            <option value="">--- Select Brand ---</option>
-                                            @foreach ($brands as $brand)
-                                            <option name="brand_id" value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                    
                                     <div class="form-group">
                                         <label> Website Url  </label>
                                         <div class="controls">
@@ -52,15 +44,15 @@
                                         </div>
                                     </div> 
                                     <div class="form-group">
-                                        <label> Features  </label>
+                                        <label> Phone  </label>
                                         <div class="controls">
-                                            <input type="text" name="features" class="form-control" placeholder="Features">
+                                            <input type="text" name="phone" class="form-control" placeholder="Phone">
                                         </div>
                                     </div> 
                                     <div class="form-group">
-                                        <label> Product Description  </label>
+                                        <label> Brand Description  </label>
                                         <div class="controls">
-                                            <textarea class="form-control" placeholder="Product Description" name="description" id="" rows="5"></textarea>
+                                            <textarea class="form-control" placeholder="Brand Description" name="description" id="" rows="5"></textarea>
                                         </div>
                                     </div> 
 

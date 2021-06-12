@@ -55,7 +55,7 @@
 
                                         <div class="barcodes-list  d-none">
                                             <ul>
-
+                                                
                                                 @foreach ( $product->Barcodes as $barcode )
                                                     
                                                 

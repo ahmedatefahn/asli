@@ -192,7 +192,8 @@
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
                 <li class=" nav-item"><a href="{{url('products')}}"><i class="feather icon-mail"></i><span class="menu-title" data-i18n="Email"> All Products </span></a></li>
-                <li class=" nav-item"><a href="add-product.php"><i class="feather icon-mail"></i><span class="menu-title" data-i18n="Email"> Add Product </span></a></li>
+                <li class=" nav-item"><a href="{{url('add-brand')}}"><i class="feather icon-mail"></i><span class="menu-title" data-i18n="Email"> Add Brand </span></a></li>
+                <li class=" nav-item"><a href="{{url('add-product')}}"><i class="feather icon-mail"></i><span class="menu-title" data-i18n="Email"> Add Product </span></a></li>
                 {{-- <li class=" nav-item"><a href="{{url('product')}}"><i class="feather icon-mail"></i><span class="menu-title" data-i18n="Email"> View Product </span></a></li> --}}
             </ul>
         </div>

@@ -84,7 +84,7 @@ class ApiController extends Controller
 
             $file = $request->file("photo");
             $filename = Str::random(6) . '_' . time() . '_' . $file->getClientOriginalName();
-            $path = 'ProjectFiles/BrandPhotos';
+            $path = 'ProjectFiles/ProductPhotos';
             $file->move($path, $filename);
             $data['photo'] = $path . '/' . $filename;
         }
