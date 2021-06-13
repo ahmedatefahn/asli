@@ -10,6 +10,7 @@ use App\Models\Customer;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Barcode;
+use App\Models\CustomerBarcode;
 use Illuminate\Support\Str;
 class ApiController extends Controller
 {
@@ -143,6 +144,7 @@ class ApiController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'code' => 'required',           
+            'customer_id' => 'required',           
         ]);
 
         if($validator->fails()){
@@ -156,6 +158,11 @@ class ApiController extends Controller
                 $update_barcode = Barcode::where('code',$barcode->code)->first();
                 $update_barcode->scan_before = 1;
                 $update_barcode->save();
+
+                $customer_barcode = new CustomerBarcode();
+                $customer_barcode->barcode_id = $update_barcode->id;
+                $customer_barcode->customer_id  = $request->customer_id;
+                $customer_barcode->save();
                 return $this->setSuccess('Barcode available',$barcode);
             }else{
                 return $this->setSuccess('Barcode available and scaned before',$barcode);

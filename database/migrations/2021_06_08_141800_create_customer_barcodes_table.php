@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBarcodesTable extends Migration
+class CreateCustomerBarcodesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreateBarcodesTable extends Migration
      */
     public function up()
     {
-        Schema::create('barcodes', function (Blueprint $table) {
+        Schema::create('customer_barcodes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('code');
-            $table->integer('product_id')->unsigned();
-            $table->foreign('product_id')->references('id')->on('products')
+            $table->integer('barcode_id')->unsigned();
+            $table->foreign('barcode_id')->references('id')->on('barcodes')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->tinyInteger('scan_before')->default(0);
+            $table->integer('customer_id')->unsigned();
+            $table->foreign('customer_id')->references('id')->on('customers')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -32,6 +34,6 @@ class CreateBarcodesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('barcodes');
+        Schema::dropIfExists('customer_barcodes');
     }
 }

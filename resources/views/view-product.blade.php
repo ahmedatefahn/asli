@@ -53,7 +53,7 @@
                                                     <div class="alert alert-success">{{ Session::get('message') }}</div>
                                                 @endif
                                                 <div class="order-input">
-                                                    <input id="myInput" placeholder=" Add Barcode " class="form-control" type="number">
+                                                    <input id="myInput" placeholder=" Add Barcode " class="form-control" type="text">
                                                     <button id="myBtn" class="btn btn-primary add-order-to-list">  Add Barcode </button>
                                                 </div> <!-- order-input -->
 

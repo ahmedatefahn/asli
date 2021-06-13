@@ -13,4 +13,11 @@ class Barcode extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function Customer()
+    {
+     
+        return $this->belongsTo(Customer::class, 'customer_barcodes','barcode_id','customer_id');
+        
+    }
 }
