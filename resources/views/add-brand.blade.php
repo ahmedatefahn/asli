@@ -25,8 +25,8 @@
                                     @endif
                                     <div class="form-group">
                                         <div class="product-image">
-                                            <input accept="image/*" type='file' id="imgInp" name="photo" class="d-none"/>
-                                            <img class="img-fluid" id="blah"  src="app-assets/images/default.png" alt="your image" />    
+                                            <input accept="image/*" type='file' id="imgInp" name="photo" class="d-none"required />
+                                            <img class="img-fluid" id="blah"  src="app-assets/images/default.png" alt="your image" required/>    
                                         </div><!-- product image -->
                                     </div>
 
@@ -36,17 +36,17 @@
                                             <input type="text" name="name" class="form-control" placeholder="Brand Name" required>
                                         </div>
                                     </div> 
+                                    <div class="form-group">
+                                        <label> Phone  </label>
+                                        <div class="controls">
+                                            <input type="number" name="phone" class="form-control" placeholder="Phone" required>
+                                        </div>
+                                    </div> 
                                     
                                     <div class="form-group">
                                         <label> Website Url  </label>
                                         <div class="controls">
-                                            <input type="text" name="website_url" class="form-control" placeholder="Website url" required>
-                                        </div>
-                                    </div> 
-                                    <div class="form-group">
-                                        <label> Phone  </label>
-                                        <div class="controls">
-                                            <input type="text" name="phone" class="form-control" placeholder="Phone">
+                                            <input type="text" name="website_url" class="form-control" placeholder="Website url" >
                                         </div>
                                     </div> 
                                     <div class="form-group">

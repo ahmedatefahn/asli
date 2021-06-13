@@ -176,7 +176,7 @@
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
             <ul class="nav navbar-nav flex-row">
-                <li class="nav-item mr-auto"><a class="" href="index.php">
+                <li class="nav-item mr-auto"><a class="" href="{{url('products')}}">
                         <div class="brand-logo">
                             <img class="img-fluid" style="width: 100%;" src="{{asset('/')}}app-assets/images/logo.png" />
                         </div>

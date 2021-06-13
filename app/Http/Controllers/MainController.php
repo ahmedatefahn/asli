@@ -26,8 +26,13 @@ class MainController extends Controller
         ]);
         
         if (Auth::attempt($credentials)) {
-            
-            return redirect('index');
+            $products = Product::with('Brand')->get();
+            $brands = Brand::with('products')->get();
+            if($products)
+            {
+                return view('all-products',['products'=>$products,'brands'=>$brands]);
+            }
+             
             
         }else{
             Session::flash('message', "Please check your name or password again!!");

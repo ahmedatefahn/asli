@@ -25,7 +25,7 @@
                                     @endif
                                     <div class="form-group">
                                         <div class="product-image">
-                                            <input accept="image/*" type='file' id="imgInp" name="photo" class="d-none"/>
+                                            <input accept="image/*" type='file' id="imgInp" name="photo" class="d-none" required />
                                             <img class="img-fluid" id="blah"  src="app-assets/images/default.png" alt="your image" />    
                                         </div><!-- product image -->
                                     </div>
@@ -46,15 +46,15 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
+                                        <label> Phone  </label>
+                                        <div class="controls">
+                                            <input type="number" name="features" class="form-control" placeholder="Phone">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label> Website Url  </label>
                                         <div class="controls">
-                                            <input type="text" name="website_url" class="form-control" placeholder="Website url" required>
-                                        </div>
-                                    </div> 
-                                    <div class="form-group">
-                                        <label> Features  </label>
-                                        <div class="controls">
-                                            <input type="text" name="features" class="form-control" placeholder="Features">
+                                            <input type="text" name="website_url" class="form-control" placeholder="Website url" >
                                         </div>
                                     </div> 
                                     <div class="form-group">
