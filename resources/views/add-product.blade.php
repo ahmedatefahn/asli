@@ -35,7 +35,7 @@
                                         <div class="controls">
                                             <input type="text" name="name" class="form-control" placeholder="Product Name" required>
                                         </div>
-                                    </div> 
+                                    </div>
                                     <div class="form-group">
                                         <label for="brand">Select Brand:</label>
                                         <select name="brand_id" class="form-control" required>

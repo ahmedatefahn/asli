@@ -1,5 +1,17 @@
 @extends('layout.master')
 
+    <style>
+        .pagination .page-item.active .page-link {
+            background-color: #bf8839 !important;
+        }
+        button#myBtn {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    </style>
+
+
     @section('title','View Product')
     @section('content')
     
@@ -37,40 +49,63 @@
  
 
                                                 <h3 class="custom-headline">  Barcodes  </h3>
-
+                                                @if (Session::has('message'))
+                                                    <div class="alert alert-success">{{ Session::get('message') }}</div>
+                                                @endif
                                                 <div class="order-input">
-                                                    <input id="myInput" placeholder=" Add Barcode " class="form-control" type="text">
+                                                    <input id="myInput" placeholder=" Add Barcode " class="form-control" type="number">
+                                                    <button id="myBtn" class="btn btn-primary add-order-to-list">  Add Barcode </button>
                                                 </div> <!-- order-input -->
 
 
+                                                <div class="all-orders mt-2">
+                                                    @foreach ( $product->Barcodes as $barcode )
+                                                    <div class="one-order">
+                                                        <p>  {{$barcode->code}} </p>
+                                                        <div class="actions">
+                                                            @if ($barcode->scan_before == 1)
+                                                                <span class="badge badge-warning"> Scaned </span>
+                                                            @else
+                                                                <span class="badge badge-success"> Not Scaned </span>
+                                                            @endif
+                                                            <a href="{{url('delete-barcode/'.$barcode->id)}}">
+                                                                <i class="fa fa-trash delete-this-order" data-toggle="tooltip" data-placement="top" title="" data-original-title="  delete  "></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    @endforeach    
+                                                    
+                                                </div> <!-- all-orders -->
+
+                                                <div class="d-none">
+                                                    <nav aria-label="Page navigation example">
+                                                        <ul class="pagination justify-content-center mt-3">
+                                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">7</a></li>
+                                                        </ul>
+                                                    </nav>
+                                                </div>
+
+                                                
                                                 <div class="submit-btn">
-                                                    <a id="myBtn" type="submit" class="btn btn-primary add-order-to-list" href="#">  Add Barcode </a>
+                                                    <form id="add-barcode" action="{{url('add-barcodes')}}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="barcodes" id="hidden-input" class=""/>
+                                                        <input type="hidden" name="product_id" value="{{$product->id}}"/>
+                                                        <button id="submitBtn" type="submit" class="btn btn-primary add-order-to-list">  Submit  Barcodes </button>
+                                                    </form>
                                                 </div> <!-- submit-btn -->
                                                 
-                                                <div class="all-orders mt-2"></div> <!-- all-orders -->
+
 
                                         </div> <!-- special-order-section -->
 
 
-
-                                        <div class="barcodes-list  d-none">
-                                            <ul>
-                                                
-                                                @foreach ( $product->Barcodes as $barcode )
-                                                    
-                                                
-                                                    <li class="barcode mt-2">
-                                                        <div class="barcode"> {{$barcode->code}} </div>
-                                                        <div class="btns">
-                                                            <button type="button" class="btn mr-1   btn-primary btn-sm waves-effect waves-light">Edit</button>
-                                                            <button type="button" class="btn   btn-danger btn-sm waves-effect waves-light">Delete</button>
-                                                        </div>
-                                                    </li> <!-- barcode -->
-                                                @endforeach    
-                                                
-                                                
-                                            </ul>
-                                        </div>
                                     </div>
                                 </div>
                             </div> <!-- card --> 
@@ -91,61 +126,58 @@
 <script type="text/javascript">
 
         var allOrderValues = [];
-        // final values will store here
 
         $(".add-order-to-list").on("click", function(){
 
+            var orderInput = $(".order-input input");
 
+            var orderVal = orderInput.val();
 
-        var orderInput = $(".order-input input");
+            var scannedLabel = `<span class="badge badge-success"> Not Scaned </span>`
 
-        var orderVal = orderInput.val();
+            var oneOrderDesign = `
+                <div class="one-order">
+                    <p>  ${orderVal} </p>
+                    <div class="actions">
+                        ${scannedLabel}
+                    </div>
+                </div>
+            `
 
-        var oneOrderDesign = `
-            <div class="one-order">
-            <p>  ${orderVal} </p>
-            <i class="fa fa-trash delete-this-order" data-toggle="tooltip" data-placement="top" title="  delete  " ></i>
-            </div>
-        `
+            if( $(orderInput).val() ) { 
 
-        if( $(orderInput).val() ) { 
+                $(".all-orders").append(oneOrderDesign);
 
-            $(".all-orders").append(oneOrderDesign);
+                orderInput.val("")
 
-            orderInput.val("")
+                allOrderValues.push(orderVal)
 
-            allOrderValues.push(orderVal)
+                // console.log(allOrderValues);
 
-            // console.log(allOrderValues);
+                $('[data-toggle="tooltip"]').tooltip();
 
-            $('[data-toggle="tooltip"]').tooltip();
+                console.log(allOrderValues);
 
-        }
+                $("#hidden-input").val(allOrderValues)
 
-        });
-
-        $(document).on("click", ".delete-this-order",  function () {
-
-        $(this).parent(".one-order").remove();
-
-        thisIndex = $(this).parent(".one-order").index();
-
-        allOrderValues.splice(thisIndex,1);
-
-        console.log(allOrderValues);
+            }
 
         });
 
+        // $(document).on("click", ".delete-this-order",  function () {
 
-        $("#pass").keypress(function(event) { 
-            if (event.keyCode === 13) { 
-                $("#GFG_Button").click(); 
-            } 
-        }); 
+        //     $(this).parents(".one-order").remove();
 
-        $("#GFG_Button").click(function() { 
-            alert("Button clicked"); 
-        }); 
+        //     thisIndex = $(this).parents(".one-order").index();
+
+        //     allOrderValues.splice(thisIndex,1);
+
+        //     console.log(allOrderValues);
+
+        //     $("#hidden-input").val(allOrderValues)
+
+        // });
+
 
         var input = document.getElementById("myInput");
         input.addEventListener("keyup", function(event) {
@@ -153,7 +185,7 @@
             event.preventDefault();
             document.getElementById("myBtn").click();
             }
-        }); 
+        });
 
 
 
