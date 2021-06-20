@@ -1,7 +1,7 @@
 @extends('layout.master')
 
-    @section('title','Add Product')
-    @section('content')
+@section('title','Add Product')
+@section('content')
     <!-- BEGIN: Content-->
     <div class="app-content content">
         <div class="content-overlay"></div>
@@ -10,30 +10,38 @@
             </div>
             <div class="content-body">
                 <!-- Input Validation start -->
-                <section class="add-product input-validation"> 
+                <section class="add-product input-validation">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Add Product </h4>
                         </div>
-                        
+
                         <div class="card-content">
                             <div class="card-body">
-                                <form class="form-horizontal" novalidate action="{{url('add-product')}}" method="post" enctype="multipart/form-data">  
+                                <form id="add-product-form" class="form-horizontal" novalidate
+                                      action="{{url('add-product')}}" method="post"
+                                      enctype="multipart/form-data">
                                     @csrf
                                     @if (Session::has('message'))
-                                            <div class="alert alert-success">{{ Session::get('message') }}</div>
+                                        <div class="alert alert-success">{{ Session::get('message') }}</div>
                                     @endif
                                     <div class="form-group">
-                                        <div class="product-image">
-                                            <input accept="image/*" type='file' id="imgInp" name="photo" class="d-none" required />
-                                            <img class="img-fluid" id="blah"  src="app-assets/images/default.png" alt="your image" />    
-                                        </div><!-- product image -->
+                                        <div class="controls">
+                                            <div class="product-image">
+                                                <input accept="image/*" type='file' id="imgInp" name="photo"
+                                                       class="d-none" required/>
+                                                <img class="img-fluid" id="blah" src="app-assets/images/default.png"
+                                                     alt="your image"/>
+                                                {{--                                            <div id="img-validation" class="help-block text-danger d-none">This is required</div>--}}
+                                            </div><!-- product image -->
+                                        </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label> Product Name  </label>
+                                        <label> Product Name </label>
                                         <div class="controls">
-                                            <input type="text" name="name" class="form-control" placeholder="Product Name" required>
+                                            <input type="text" name="name" class="form-control"
+                                                   placeholder="Product Name" required>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -41,37 +49,41 @@
                                         <select name="brand_id" class="form-control" required>
                                             <option value="">--- Select Brand ---</option>
                                             @foreach ($brands as $brand)
-                                            <option name="brand_id" value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                                <option name="brand_id"
+                                                        value="{{ $brand->id }}">{{ $brand->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label> Phone  </label>
+                                        <label> Phone </label>
                                         <div class="controls">
-                                            <input type="number" name="features" class="form-control" placeholder="Phone">
+                                            <input type="number" name="features" class="form-control"
+                                                   placeholder="Phone">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label> Website Url  </label>
+                                        <label> Website Url </label>
                                         <div class="controls">
-                                            <input type="text" name="website_url" class="form-control" placeholder="Website url" >
+                                            <input type="text" name="website_url" class="form-control"
+                                                   placeholder="Website url">
                                         </div>
-                                    </div> 
+                                    </div>
                                     <div class="form-group">
-                                        <label> Product Description  </label>
+                                        <label> Product Description </label>
                                         <div class="controls">
-                                            <textarea class="form-control" placeholder="Product Description" name="description" id="" rows="5"></textarea>
+                                            <textarea class="form-control" placeholder="Product Description"
+                                                      name="description" id="" rows="5"></textarea>
                                         </div>
-                                    </div> 
+                                    </div>
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div> 
+                                    </div>
 
                                 </form>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </section>
                 <!-- Input Validation end -->
 
@@ -79,24 +91,31 @@
         </div>
     </div>
     <!-- END: Content-->
-    @endsection
+@endsection
 
 
 
 
 @section('js')
-<script>
+    <script>
 
-    imgInp.onchange = evt => {
-        const [file] = imgInp.files
-        if (file) {
-            blah.src = URL.createObjectURL(file)
+        imgInp.onchange = evt => {
+            const [file] = imgInp.files
+            if (file) {
+                blah.src = URL.createObjectURL(file)
+            }
         }
-    }
 
-    $(".product-image img").on("click",function(){
-        $("#imgInp").click();
-    })
+        $(".product-image img").on("click", function () {
+            $("#imgInp").click();
+        })
 
-</script>
+        $("button[type=submit]").on('click', function () {
+            if ($('#imgInp').val().length) {
+                $('.product-image').css("border", '2px dashed #d8d8d8');
+            } else {
+                $('.product-image').css('border', '2px dashed red');
+            }
+        })
+    </script>
 @endsection

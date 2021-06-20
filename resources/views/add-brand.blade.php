@@ -10,24 +10,26 @@
             </div>
             <div class="content-body">
                 <!-- Input Validation start -->
-                <section class="add-product input-validation"> 
+                <section class="add-product input-validation">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Add Brand </h4>
                         </div>
-                        
+
                         <div class="card-content">
                             <div class="card-body">
-                                <form class="form-horizontal" novalidate action="{{url('add-brand')}}" method="post" enctype="multipart/form-data">  
+                                <form class="form-horizontal" novalidate action="{{url('add-brand')}}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     @if (Session::has('message'))
                                             <div class="alert alert-success">{{ Session::get('message') }}</div>
                                     @endif
                                     <div class="form-group">
-                                        <div class="product-image">
-                                            <input accept="image/*" type='file' id="imgInp" name="photo" class="d-none"required />
-                                            <img class="img-fluid" id="blah"  src="app-assets/images/default.png" alt="your image" required/>    
-                                        </div><!-- product image -->
+                                        <div class="controls">
+                                            <div class="product-image">
+                                                <input accept="image/*" type='file' id="imgInp" name="photo" class="d-none"required />
+                                                <img class="img-fluid" id="blah"  src="app-assets/images/default.png" alt="your image" required/>
+                                            </div><!-- product image -->
+                                        </div>
                                     </div>
 
                                     <div class="form-group">
@@ -35,35 +37,35 @@
                                         <div class="controls">
                                             <input type="text" name="name" class="form-control" placeholder="Brand Name" required>
                                         </div>
-                                    </div> 
+                                    </div>
                                     <div class="form-group">
                                         <label> Phone  </label>
                                         <div class="controls">
                                             <input type="number" name="phone" class="form-control" placeholder="Phone" required>
                                         </div>
-                                    </div> 
-                                    
+                                    </div>
+
                                     <div class="form-group">
                                         <label> Website Url  </label>
                                         <div class="controls">
                                             <input type="text" name="website_url" class="form-control" placeholder="Website url" >
                                         </div>
-                                    </div> 
+                                    </div>
                                     <div class="form-group">
                                         <label> Brand Description  </label>
                                         <div class="controls">
                                             <textarea class="form-control" placeholder="Brand Description" name="description" id="" rows="5"></textarea>
                                         </div>
-                                    </div> 
+                                    </div>
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div> 
+                                    </div>
 
                                 </form>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </section>
                 <!-- Input Validation end -->
 
@@ -88,6 +90,14 @@
 
     $(".product-image img").on("click",function(){
         $("#imgInp").click();
+    })
+
+    $("button[type=submit]").on('click', function () {
+        if ($('#imgInp').val().length) {
+            $('.product-image').css("border", '2px dashed #d8d8d8');
+        } else {
+            $('.product-image').css('border', '2px dashed red');
+        }
     })
 
 </script>

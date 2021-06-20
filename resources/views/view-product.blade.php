@@ -14,7 +14,7 @@
 
     @section('title','View Product')
     @section('content')
-    
+
     <!-- BEGIN: Content-->
     <div class="app-content content">
         <div class="content-overlay"></div>
@@ -30,12 +30,12 @@
                             <div class="card">
                                 <div class="card-content">
                                     <img class="card-img-top img-fluid" src="{{asset('/')}}{{$product->photo}}" alt="Card image cap">
-                                    <h2 class="mt-2 text-center">{{$product->name}} </h2> 
+                                    <h2 class="mt-2 text-center">{{$product->name}} </h2>
                                     <div class="card-body p-0">
-                                        <p class="card-text  mb-0"> {{$product->description}}</p> 
+                                        <p class="card-text  mb-0"> {{$product->description}}</p>
                                     </div>
                                 </div>
-                            </div> <!-- card --> 
+                            </div> <!-- card -->
 
                         </div>
 
@@ -44,13 +44,13 @@
                             <div class="card">
                                 <div class="card-content">
                                     <div class="card-body p-0">
-                                                    
+
                                         <div class="special-order-section">
- 
+
 
                                                 <h3 class="custom-headline">  Barcodes  </h3>
                                                 @if (Session::has('message'))
-                                                    <div class="alert alert-success">{{ Session::get('message') }}</div>
+                                                    <div class="alert alert-{{Session::get('error') ? 'danger' : 'success'}}">{{ Session::get('message') }}</div>
                                                 @endif
                                                 <div class="order-input">
                                                     <input id="myInput" placeholder=" Add Barcode " class="form-control" type="text">
@@ -73,8 +73,8 @@
                                                             </a>
                                                         </div>
                                                     </div>
-                                                    @endforeach    
-                                                    
+                                                    @endforeach
+
                                                 </div> <!-- all-orders -->
 
                                                 <div class="d-none">
@@ -91,16 +91,16 @@
                                                     </nav>
                                                 </div>
 
-                                                
+
                                                 <div class="submit-btn">
                                                     <form id="add-barcode" action="{{url('add-barcodes')}}" method="POST">
                                                         @csrf
                                                         <input type="hidden" name="barcodes" id="hidden-input" class=""/>
                                                         <input type="hidden" name="product_id" value="{{$product->id}}"/>
-                                                        <button id="submitBtn" type="submit" class="btn btn-primary add-order-to-list">  Submit  Barcodes </button>
+                                                        <button id="submitBtn" type="submit" class="btn btn-primary">  Submit  Barcodes </button>
                                                     </form>
                                                 </div> <!-- submit-btn -->
-                                                
+
 
 
                                         </div> <!-- special-order-section -->
@@ -108,7 +108,7 @@
 
                                     </div>
                                 </div>
-                            </div> <!-- card --> 
+                            </div> <!-- card -->
 
                         </div>
 
@@ -144,7 +144,7 @@
                 </div>
             `
 
-            if( $(orderInput).val() ) { 
+            if( $(orderInput).val().trim().length > 0) {
 
                 $(".all-orders").append(oneOrderDesign);
 
@@ -160,6 +160,9 @@
 
                 $("#hidden-input").val(allOrderValues)
 
+            } else {
+                orderInput.val('');
+                alert('You cannot add empty barcode');
             }
 
         });
@@ -189,6 +192,6 @@
 
 
 
- 
+
 </script>
 @endsection
