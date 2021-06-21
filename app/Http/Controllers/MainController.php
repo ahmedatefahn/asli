@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\BarcodesImport;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use Auth;
@@ -129,6 +132,10 @@ class MainController extends Controller
         return Redirect::back();
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function addBarcodes(Request $request)
     {
         $message = "You cannot add empty code";
@@ -138,19 +145,19 @@ class MainController extends Controller
         }
 
         $error = false;
-        $codes = explode(',', $request->barcodes);
-        $existedCodes = $this->_areBarcodesExisted($codes);
+        $secretCodes = explode(',', $request->barcodes);
+        $existedSecretCodes = $this->_areBarcodesExisted($secretCodes);
 
-        if ($existedCodes['count']) {
-            $message = 'Error codes duplicated:  `' . implode(', ', $existedCodes['codes']) . '`';
-            $codes = $this->_filterNewBarcodes($codes, $existedCodes['codes']);
+        if ($existedSecretCodes['secret_codes_count']) {
+            $message = 'Error codes duplicated:  `' . implode(', ', $existedSecretCodes['secret_codes']) . '`';
+            $existedSecretCodes = $this->_filterNewBarcodes($secretCodes, $existedSecretCodes['secret_codes']);
             $error = true;
         }
 
         $data = [];
-        foreach ($codes as $code) {
+        foreach ($existedSecretCodes as $code) {
             $data[] = [
-                'code' => $code,
+                'secret_code' => $code,
                 'product_id' => $request->product_id,
                 'scan_before' => 0,
             ];
@@ -166,18 +173,27 @@ class MainController extends Controller
     }
 
     /**
-     * @param $barcodes
+     * @param $secretCodes
+     * @param $publicCodes
      * @return mixed
      */
-    private function _areBarcodesExisted($barcodes)
+    private function _areBarcodesExisted($secretCodes, $publicCodes = [])
     {
-        $query = Barcode::whereIn('code', $barcodes);
-        $count = $query->count();
-        $existedBarcodes = $query->pluck('code')->toArray();
+        $publicCodes = Barcode::whereIn('public_code', $publicCodes);
+        $secretCodes = Barcode::whereIn('secret_code', $secretCodes);
+
+
+        $publicCodesCount = $publicCodes->count();
+        $secretCodesCount = $secretCodes->count();
+
+        $existedPublicCodes = $secretCodes->pluck('public_code')->toArray();
+        $existedSecretCodes = $secretCodes->pluck('secret_code')->toArray();
 
         return [
-            'count' => $count,
-            'codes' => $existedBarcodes
+            'public_codes_count' => $publicCodesCount,
+            'secret_codes_count' => $secretCodesCount,
+            'public_codes' => $existedPublicCodes,
+            'secret_codes' => $existedSecretCodes
         ];
     }
 
@@ -189,5 +205,87 @@ class MainController extends Controller
     private function _filterNewBarcodes($originalCodes, $existedCodes)
     {
         return array_diff($originalCodes, $existedCodes);
+    }
+
+    /**
+     * @param Request $request
+     * @return array|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function importBarcodes(Request $request)
+    {
+        validator($request->all(), [
+            'product_id' => 'required|exists:products,id',
+            'codes_file' => 'required|mime:xlsx, csv, doc,docx,ppt,pptx,ods,odt,odp'
+        ]);
+
+//        $fileExtension = $request->file('codes_file')->getClientOriginalExtension();
+//
+//        if (!in_array($fileExtension, ["xlsx", "csv", "xls"])) {
+//            return redirect()->with(['result', 'guests file must be within these extensions "xlsx", "csv", "xls"']);
+//        }
+
+        $rows = Excel::toArray(null, $request->file('codes_file'))[0]; // access first index
+        $secretCodes = [];
+        $publicCodes = [];
+        $rowsCount = count($rows) - 1; // skip first row
+
+        foreach ($rows as $key => $row) {
+            if (!$key) continue; // skip first row in sheet.
+            $secretCodes[$row[0]] = [
+                'public_code' => $row[1],
+                'date' => Carbon::parse($row[2])->format('Y-m-d')
+            ];
+            $publicCodes[] = $row[1];
+        }
+
+        $existedBarcodes = $this->_areBarcodesExisted(array_keys($secretCodes), $publicCodes);
+
+        $message = $this->_getImportErrorMessage($existedBarcodes, $rowsCount);
+
+        $filteredCodes = $this->_filterNewBarcodes(array_keys($secretCodes), $existedBarcodes['secret_codes']);
+
+        $toBeInsertedBarcodes = [];
+        foreach ($filteredCodes as $code) {
+            $codeData = $secretCodes[$code];
+            if (isset($codeData['public_code']) && isset($codeData['date'])) {
+                ;
+                $toBeInsertedBarcodes [] = [
+                    'product_id' => $request->product_id,
+                    'secret_code' => $code,
+                    'public_code' => $codeData['public_code'],
+                    'date' => $codeData['date']
+                ];
+            }
+        }
+
+        Barcode::insert($toBeInsertedBarcodes);
+
+        if (!$message) {
+            $message = 'Data has been imported successfully';
+        }
+
+        return redirect()->back()->with(['import_results' => $message]);
+    }
+
+    /**
+     * @param $existedBarcodes
+     * @param $rowsCount
+     * @return string
+     */
+    private function _getImportErrorMessage($existedBarcodes, $rowsCount)
+    {
+        $message = '';
+
+        if ($existedBarcodes['public_codes_count']) {
+            $message .= "There are : " . $existedBarcodes['public_codes_count'] . ' public codes duplicated <br>';
+            $message .= '`' . implode(", ", $existedBarcodes['public_codes']) . '`<br>';
+        }
+
+        if ($existedBarcodes['secret_codes_count']) {
+            $message .= "There are : " . $existedBarcodes['public_codes_count'] . ' secret codes duplicated <br>';
+            $message .= '`' . implode(", ", $existedBarcodes['secret_codes']) . "`<br> Out Of $rowsCount rows";
+        }
+
+        return $message;
     }
 }

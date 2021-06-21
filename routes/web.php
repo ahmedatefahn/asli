@@ -31,5 +31,5 @@ Route::group(['namespace'=> 'App\Http\Controllers'],function () {
     Route::post('add-brand','MainController@addBrand');
     Route::get('delete-barcode/{id}','MainController@deleteBarcode');
     Route::post('add-barcodes','MainController@addBarcodes');
-    
+    Route::post('import-barcodes','MainController@importBarcodes');
 });
