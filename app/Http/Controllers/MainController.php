@@ -218,12 +218,6 @@ class MainController extends Controller
             'codes_file' => 'required|mime:xlsx, csv, doc,docx,ppt,pptx,ods,odt,odp'
         ]);
 
-//        $fileExtension = $request->file('codes_file')->getClientOriginalExtension();
-//
-//        if (!in_array($fileExtension, ["xlsx", "csv", "xls"])) {
-//            return redirect()->with(['result', 'guests file must be within these extensions "xlsx", "csv", "xls"']);
-//        }
-
         $rows = Excel::toArray(null, $request->file('codes_file'))[0]; // access first index
         $secretCodes = [];
         $publicCodes = [];
@@ -242,16 +236,17 @@ class MainController extends Controller
 
         $message = $this->_getImportErrorMessage($existedBarcodes, $rowsCount);
 
-        $filteredCodes = $this->_filterNewBarcodes(array_keys($secretCodes), $existedBarcodes['secret_codes']);
+        $filteredSecretCodes = $this->_filterNewBarcodes(array_keys($secretCodes), $existedBarcodes['secret_codes']);
 
         $toBeInsertedBarcodes = [];
-        foreach ($filteredCodes as $code) {
-            $codeData = $secretCodes[$code];
-            if (isset($codeData['public_code']) && isset($codeData['date'])) {
-                ;
+        foreach ($filteredSecretCodes as $secretCode) {
+            $codeData = $secretCodes[$secretCode];
+            if (isset($codeData['public_code'])
+                && isset($codeData['date'])
+                && !in_array($codeData['public_code'], $existedBarcodes['public_codes'])) {
                 $toBeInsertedBarcodes [] = [
                     'product_id' => $request->product_id,
-                    'secret_code' => $code,
+                    'secret_code' => $secretCode,
                     'public_code' => $codeData['public_code'],
                     'date' => $codeData['date']
                 ];
