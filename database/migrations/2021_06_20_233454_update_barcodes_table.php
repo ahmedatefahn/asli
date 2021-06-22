@@ -16,7 +16,8 @@ class UpdateBarcodesTable extends Migration
         Schema::table('barcodes', function (Blueprint $table) {
            $table->renameColumn('code', 'secret_code');
            $table->text('public_code');
-           $table->date('date');
+           $table->date('custom_creation_date')->nullable();
+           $table->date('scan_date')->nullable();
         });
     }
 

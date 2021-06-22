@@ -89,6 +89,16 @@
                                                     Barcode
                                                 </button>
                                             </div> <!-- order-input -->
+                                            <div class="submit-btn">
+                                                <form id="add-barcode" action="{{url('add-barcodes')}}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="barcodes" id="hidden-input" class=""/>
+                                                    <input type="hidden" name="product_id" value="{{$product->id}}"/>
+                                                    <button id="submitBtn" type="submit" class="btn btn-danger"> Submit
+                                                        Barcodes
+                                                    </button>
+                                                </form>
+                                            </div> <!-- submit-btn -->
 
 
                                             <div class="all-orders mt-2">
@@ -97,6 +107,11 @@
                                                         <p>  {{$barcode->secret_code}} </p>
                                                         <div class="actions">
                                                             @if ($barcode->scan_before == 1)
+                                                                <span class="text-muted" style="font-size: 12">
+                                                                    @if($barcode->scan_date)
+                                                                        {{date('Y-m-d h:i:s',strtotime($barcode->scan_date))}}
+                                                                    @endif
+                                                                </span>
                                                                 <span class="badge badge-warning"> Scaned </span>
                                                             @else
                                                                 <span class="badge badge-success"> Not Scaned </span>
@@ -126,20 +141,6 @@
                                                     </ul>
                                                 </nav>
                                             </div>
-
-
-                                            <div class="submit-btn">
-                                                <form id="add-barcode" action="{{url('add-barcodes')}}" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="barcodes" id="hidden-input" class=""/>
-                                                    <input type="hidden" name="product_id" value="{{$product->id}}"/>
-                                                    <button id="submitBtn" type="submit" class="btn btn-primary"> Submit
-                                                        Barcodes
-                                                    </button>
-                                                </form>
-                                            </div> <!-- submit-btn -->
-
-
                                         </div> <!-- special-order-section -->
 
 
@@ -183,7 +184,7 @@
 
             if ($(orderInput).val().trim().length > 0) {
 
-                $(".all-orders").append(oneOrderDesign);
+                $(".all-orders").prepend(oneOrderDesign);
 
                 orderInput.val("")
 

@@ -146,19 +146,22 @@ class MainController extends Controller
 
         $error = false;
         $secretCodes = explode(',', $request->barcodes);
-        $existedSecretCodes = $this->_areBarcodesExisted($secretCodes);
+        $existedSecretCodes = $this->_existedBarcodes($secretCodes);
 
         if ($existedSecretCodes['secret_codes_count']) {
             $message = 'Error codes duplicated:  `' . implode(', ', $existedSecretCodes['secret_codes']) . '`';
-            $existedSecretCodes = $this->_filterNewBarcodes($secretCodes, $existedSecretCodes['secret_codes']);
+            $secretCodes = $this->_filterNewBarcodes($secretCodes, $existedSecretCodes['secret_codes']);
             $error = true;
         }
 
         $data = [];
-        foreach ($existedSecretCodes as $code) {
+
+        foreach ($secretCodes as $code) {
             $data[] = [
                 'secret_code' => $code,
+                'public_code' => '',
                 'product_id' => $request->product_id,
+                'custom_creation_date' => Carbon::now()->format('Y-m-d'),
                 'scan_before' => 0,
             ];
         }
@@ -177,7 +180,7 @@ class MainController extends Controller
      * @param $publicCodes
      * @return mixed
      */
-    private function _areBarcodesExisted($secretCodes, $publicCodes = [])
+    private function _existedBarcodes($secretCodes, $publicCodes = [])
     {
         $publicCodes = Barcode::whereIn('public_code', $publicCodes);
         $secretCodes = Barcode::whereIn('secret_code', $secretCodes);
@@ -232,7 +235,7 @@ class MainController extends Controller
             $publicCodes[] = $row[1];
         }
 
-        $existedBarcodes = $this->_areBarcodesExisted(array_keys($secretCodes), $publicCodes);
+        $existedBarcodes = $this->_existedBarcodes(array_keys($secretCodes), $publicCodes);
 
         $message = $this->_getImportErrorMessage($existedBarcodes, $rowsCount);
 
@@ -248,7 +251,7 @@ class MainController extends Controller
                     'product_id' => $request->product_id,
                     'secret_code' => $secretCode,
                     'public_code' => $codeData['public_code'],
-                    'date' => $codeData['date']
+                    'custom_creation_date' => $codeData['date']
                 ];
             }
         }

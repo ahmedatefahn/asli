@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Barcode extends Model
 {
     use HasFactory;
-    protected $fillable = ['code','product_id','scan_before'];
+    protected $guarded = [];
+
+
     public function Product()
     {
         return $this->belongsTo(Product::class);
@@ -16,8 +18,17 @@ class Barcode extends Model
 
     public function Customer()
     {
-     
-        return $this->belongsTo(Customer::class, 'customer_barcodes','barcode_id','customer_id');
-        
+
+        return $this->belongsTo(Customer::class, 'customer_barcodes', 'barcode_id', 'customer_id');
+
+    }
+
+    /**
+     * @param $creationDate
+     * @return mixed
+     */
+    public function getCreatedAtAttribute($creationDate)
+    {
+        return $this->custom_creation_date ? $this->custom_creation_date : $creationDate;
     }
 }
