@@ -22,7 +22,7 @@ Route::get('get-product', function () {
 Route::group(['namespace'=> 'App\Http\Controllers'],function () {
     Route::post('login','MainController@login');
     Route::get('index','MainController@index');
-    Route::get('products','MainController@getBrands');
+    Route::get('home','MainController@getBrands');
     Route::get('product/{id}','MainController@getAProduct');
     Route::get('add-product','MainController@getAddProduct');
     Route::post('add-product','MainController@addProduct');
