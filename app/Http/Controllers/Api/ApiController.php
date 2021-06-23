@@ -155,8 +155,9 @@ class ApiController extends Controller
         $secretBarcode = Barcode::where('secret_code', $request->code)->with('Product', 'customer')->first();
 
         if ($secretBarcode) {
+            $code = clone $secretBarcode;
 
-            if ($secretBarcode->scan_befor) {
+            if (!$code->scan_before) {
                 $secretBarcode->update([
                     'scan_before' => 1,
                     'scan_date' => Carbon::now()->format('Y-m-d h:i:s'),
@@ -164,7 +165,7 @@ class ApiController extends Controller
                 ]);
             }
 
-            return $this->setSuccess('Barcode available', $secretBarcode);
+            return $this->setSuccess('Barcode available', $code);
         }
 
         return $this->setError('Barcode not available');
