@@ -18,6 +18,7 @@ class UpdateBarcodesTable extends Migration
            $table->text('public_code');
            $table->date('custom_creation_date')->nullable();
            $table->date('scan_date')->nullable();
+           $table->unsignedBigInteger('scanned_by')->nullable(); // reflects customer_id
         });
     }
 

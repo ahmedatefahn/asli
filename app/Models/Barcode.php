@@ -10,17 +10,20 @@ class Barcode extends Model
     use HasFactory;
     protected $guarded = [];
 
-
-    public function Product()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product()
     {
         return $this->belongsTo(Product::class);
     }
 
-    public function Customer()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function customer()
     {
-
-        return $this->belongsTo(Customer::class, 'customer_barcodes', 'barcode_id', 'customer_id');
-
+        return $this->belongsTo(Customer::class, 'scanned_by') ?? 'undefined';
     }
 
     /**
