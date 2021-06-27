@@ -32,4 +32,5 @@ Route::group(['namespace'=> 'App\Http\Controllers'],function () {
     Route::get('delete-barcode/{id}','MainController@deleteBarcode');
     Route::post('add-barcodes','MainController@addBarcodes');
     Route::post('import-barcodes','MainController@importBarcodes');
+    Route::get('export-barcodes','MainController@exportBarcodes');
 });

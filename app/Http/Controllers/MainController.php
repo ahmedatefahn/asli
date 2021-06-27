@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BarcodesExport;
 use App\Imports\BarcodesImport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -285,5 +286,10 @@ class MainController extends Controller
         }
 
         return $message;
+    }
+
+    public function exportBarcodes(Request $request)
+    {
+        return (new BarcodesExport())->download('barcodes.xlsx');
     }
 }

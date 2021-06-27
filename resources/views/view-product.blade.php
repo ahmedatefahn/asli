@@ -40,7 +40,8 @@
                             </div> <!-- card -->
                             <div class="card mt-2">
                                 <div class="card-header">
-                                    <h4>Upload Codex xlsx sheet.</h4>
+                                    <h4>Upload Codex xlsx sheet. <small><a href="{{asset('sample.xlsx')}}"><u>Download
+                                                    sample</u></a></small></h4>
                                 </div>
                                 <div class="card-body">
                                     <form id="upload-codes-sheet-form" novalidate enctype="multipart/form-data"
@@ -69,7 +70,12 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h4>Export Barcodes to xlsx sheet. <a
+                                            href="{{url('export-barcodes')}}"><u>Export</u></a></h4>
+                                </div>
+                            </div>
                             <div class="card">
                                 <div class="card-content">
                                     <div class="card-body p-0">
@@ -106,7 +112,7 @@
                                                     <div class="one-order">
                                                         <p>  {{$barcode->secret_code}} </p>
                                                         <div class="actions">
-                                                            @if ($barcode->scan_before == 1)
+                                                            @if ($barcode->scan_before)
                                                                 <span class="text-muted" style="font-size: 12">
                                                                     @if($barcode->scan_date)
                                                                         {{date('Y-m-d h:i:s',strtotime($barcode->scan_date))}}
